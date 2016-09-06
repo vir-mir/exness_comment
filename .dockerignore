@@ -1,0 +1,7 @@
+.git
+.gitignore
+Dockerfile
+pytest.ini
+requirements-dev.txt
+README.md
+.coveragerc

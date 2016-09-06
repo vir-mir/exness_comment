@@ -1,0 +1,8 @@
+[run]
+omit=configs/urls.py,*test*,configs/*settings.py
+
+[report]
+; Показывать непокрытые линии
+show_missing=True
+; Показывать только не 100% покрытые файлы
+skip_covered=True
