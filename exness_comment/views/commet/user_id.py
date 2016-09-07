@@ -1,9 +1,11 @@
 import datetime
+import os
 
 import schema as vs
 import sqlalchemy as sa
 from aiohttp import web
 
+from exness_comment.configs import settings
 from exness_comment.models import Comment
 from exness_comment.utils.export import factory_export
 from exness_comment.utils.views import dumps
@@ -65,11 +67,13 @@ class CommentsExportUserById(MixinComment):
 
         export = factory_export(data['format'])
 
-        name = 'export-user-{}'.format(data['user_id'])
+        name = 'export-user-{}-{}.{}'.format(data['user_id'], datetime.datetime.now(), data['format'])
+        data_export = await export(comments)
 
-        headers = {
-            'Content-Type': 'application/octet-stream',
-            'Content-Disposition': 'attachment; filename="{}.{}"'.format(name, data['format']),
-        }
+        filename = os.path.join(settings.MEDIA_ROOT, 'exports', name)
+        url = os.path.join(settings.MEDIA_URL, 'exports', name)
 
-        return web.Response(body=await export(comments), headers=headers)
+        with open(filename, 'w+b') as f:
+            f.write(data_export)
+
+        return web.HTTPFound(url)
