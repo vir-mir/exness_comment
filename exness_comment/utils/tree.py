@@ -6,7 +6,7 @@ from .db import Transaction
 
 
 async def delete_tree(table, conn, pk):
-    query = (sa.select([table.rkey, table.lkey, table.level, table.tree_id])
+    query = (sa.select([table])
              .select_from(table)
              .where(table.id == pk))
 
@@ -33,6 +33,8 @@ async def delete_tree(table, conn, pk):
                                 table.tree_id == comment.tree_id)))
 
         await conn.execute(query)
+
+        return dict(comment)
 
 
 async def insert_tree(table, conn, parent_id, data: dict = None):

@@ -68,9 +68,9 @@ class Comment(CommentMixin, Base):
 
 class CommentHistory(CommentMixin, Base):
     TYPE = {
-        'add': "Add comment",
-        'update': "Edit comment",
-        'delete': "Delete comment",
+        "Add comment": 'add',
+        "Edit comment": 'update',
+        "Delete comment": 'delete',
     }
     __tablename__ = 'comments_history'
 
@@ -78,4 +78,4 @@ class CommentHistory(CommentMixin, Base):
     id = sa.Column(sa.Integer, nullable=True)
     event_user = sa.Column(sa.Integer, index=True)
     event_date = sa.Column(sa.DateTime(timezone=True), server_default=func.now())
-    event_type = sa.Column(postgresql.ENUM(*list(TYPE.keys()), name='event_type', create_type=False))
+    event_type = sa.Column(postgresql.ENUM(*list(TYPE.values()), name='event_type', create_type=False))

@@ -11,6 +11,9 @@ async def middleware_exception(app, handler):
     if 'StaticRoute' in repr(handler):
         return handler
 
+    if 'websocket_points' in repr(handler):
+        return handler
+
     @wraps(handler)
     async def middleware_handler(request):
         try:

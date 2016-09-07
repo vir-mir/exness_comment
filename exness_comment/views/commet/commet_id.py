@@ -4,7 +4,7 @@ import schema as vs
 import sqlalchemy as sa
 
 from exness_comment.middlewares.exceptions import abort
-from exness_comment.models import Comment
+from exness_comment.models import Comment, CommentHistory
 from exness_comment.utils.tree import delete_tree
 from exness_comment.utils.views import json_response
 from exness_comment.views.commet.mixin import MixinComment
@@ -20,10 +20,24 @@ class CommentById(MixinComment):
         }
         data = self.validate(schema, data)
         data['comment_id'] = int(data['comment_id'])
-        error = await delete_tree(Comment, self.request['conn'], data['comment_id'])
+        comment = await delete_tree(Comment, self.request['conn'], data['comment_id'])
 
-        if error:
-            abort(406, error)
+        if type(comment) is not dict:
+            abort(406, comment)
+
+        query = sa.insert(CommentHistory)
+        query = query.values(
+            date_created=comment['date_created'],
+            text=comment['text'],
+            event_user=comment['user_id'],
+            user_id=comment['user_id'],
+            id=comment['id'],
+            parent_id=comment['parent_id'] if comment['parent_id'] else 0,
+            entity_id=comment['entity_id'],
+            event_type=CommentHistory.TYPE.get('Delete comment')
+        )
+
+        await self.request['conn'].execute(query)
 
         return json_response(status=202)
 
@@ -39,17 +53,35 @@ class CommentById(MixinComment):
 
         data['comment_id'] = int(data['comment_id'])
 
-        query = (sa.select([Comment.id])
+        query = (sa.select([Comment])
                  .select_from(Comment)
                  .where(Comment.id == data['comment_id']))
 
         conn = self.request['conn']
-        if (await conn.execute(query)).rowcount == 0:
+        comment = await (await conn.execute(query)).fetchone()
+
+        if not comment:
             abort(406, 'not comment id %s' % data['comment_id'])
 
         query = (sa.update(Comment)
                  .values(text=data['text'], date_update=datetime.datetime.now())
                  .where(Comment.id == data['comment_id']))
+
+        await conn.execute(query)
+
+        comment = dict(comment)
+
+        query = sa.insert(CommentHistory)
+        query = query.values(
+            date_created=comment['date_created'],
+            text=comment['text'],
+            id=comment['id'],
+            event_user=comment['user_id'],
+            user_id=comment['user_id'],
+            parent_id=comment['parent_id'] if comment['parent_id'] else 0,
+            entity_id=comment['entity_id'],
+            event_type=CommentHistory.TYPE.get('Edit comment')
+        )
 
         await conn.execute(query)
 
