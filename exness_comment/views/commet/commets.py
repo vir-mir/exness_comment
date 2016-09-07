@@ -5,7 +5,7 @@ import sqlalchemy as sa
 from sqlalchemy.orm import aliased
 
 from exness_comment.middlewares.exceptions import abort
-from exness_comment.models import Entity, Comment, CommentHistory
+from exness_comment.models import Entity, Comment, CommentHistory, Notification
 from exness_comment.utils import tree
 from exness_comment.utils.views import json_response
 from exness_comment.views.commet.mixin import MixinComment
@@ -101,7 +101,7 @@ class Comments(MixinComment):
             'date_update': datetime.datetime.now()
         }
 
-        comment = await tree.insert_tree(Comment, self.request['conn'], parent_id, values)
+        comment, level = await tree.insert_tree(Comment, self.request['conn'], parent_id, values)
         resp = await comment.fetchone()
 
         query = sa.insert(CommentHistory)
@@ -116,6 +116,10 @@ class Comments(MixinComment):
             id=resp.id
         )
 
+        values['id'] = resp.id
+        values['parent_id'] = parent_id
+        values['level'] = level
+
         await conn.execute(query)
 
-        return json_response(resp, status=201)
+        return json_response(values, status=201, socket_action=Notification.ACTION['Push comment'])

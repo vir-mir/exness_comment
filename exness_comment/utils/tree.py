@@ -74,4 +74,4 @@ async def insert_tree(table, conn, parent_id, data: dict = None):
         }
         values.update(data)
         query = sa.insert(table).values(**values).return_defaults()
-        return await conn.execute(query)
+        return await conn.execute(query), level

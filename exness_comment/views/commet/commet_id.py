@@ -4,7 +4,7 @@ import schema as vs
 import sqlalchemy as sa
 
 from exness_comment.middlewares.exceptions import abort
-from exness_comment.models import Comment, CommentHistory
+from exness_comment.models import Comment, CommentHistory, Notification
 from exness_comment.utils.tree import delete_tree
 from exness_comment.utils.views import json_response
 from exness_comment.views.commet.mixin import MixinComment
@@ -39,7 +39,7 @@ class CommentById(MixinComment):
 
         await self.request['conn'].execute(query)
 
-        return json_response(status=202)
+        return json_response(comment, status=202, socket_action=Notification.ACTION['Push comment'])
 
     async def put(self):
         data = await self.request.json()
@@ -85,4 +85,4 @@ class CommentById(MixinComment):
 
         await conn.execute(query)
 
-        return json_response(status=202)
+        return json_response(comment, status=202, socket_action=Notification.ACTION['Push comment'])

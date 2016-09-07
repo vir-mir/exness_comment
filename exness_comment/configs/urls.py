@@ -11,5 +11,8 @@ urls = [
 
     ('*', '/exports', Exports),
 
+    ('*', '/notifications', Notifications),
+    ('*', '/notifications/{user_id}', NotificationById),
+
     ('GET', '/ws', websocket_points),
 ]

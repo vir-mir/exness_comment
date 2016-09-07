@@ -32,8 +32,13 @@ class EncoderJson(json.JSONEncoder):
 
 
 def json_response(data=None, *, body=None, status=200, reason=None, headers=None,
-                  content_type='application/json'):
+                  content_type='application/json', socket_action=False):
     text = json.dumps(data, cls=EncoderJson)
 
-    return web.Response(text=text, body=body, status=status, reason=reason,
-                        headers=headers, content_type=content_type)
+    response = web.Response(text=text, body=body, status=status, reason=reason, headers=headers,
+                            content_type=content_type)
+
+    if socket_action:
+        response.socket_action = socket_action
+
+    return response

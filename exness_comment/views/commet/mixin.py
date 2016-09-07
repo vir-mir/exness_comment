@@ -10,6 +10,7 @@ class MixinComment(View):
             Comment.date_created,
             Comment.date_update,
             Comment.parent_id,
+            Comment.entity_id,
             Comment.level,
             Comment.user_id,
             Comment.text,
