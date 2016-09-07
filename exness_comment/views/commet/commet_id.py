@@ -2,11 +2,11 @@ import datetime
 
 import schema as vs
 import sqlalchemy as sa
-from aiohttp import web
 
 from exness_comment.middlewares.exceptions import abort
 from exness_comment.models import Comment
 from exness_comment.utils.tree import delete_tree
+from exness_comment.utils.views import json_response
 from exness_comment.views.commet.mixin import MixinComment
 
 __all__ = ['CommentById']
@@ -25,7 +25,7 @@ class CommentById(MixinComment):
         if error:
             abort(406, error)
 
-        return web.json_response(status=202)
+        return json_response(status=202)
 
     async def put(self):
         data = await self.request.json()
@@ -53,4 +53,4 @@ class CommentById(MixinComment):
 
         await conn.execute(query)
 
-        return web.json_response(status=202)
+        return json_response(status=202)

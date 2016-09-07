@@ -7,4 +7,6 @@ urls = [
     ('*', '/comments/{comment_id}', CommentById),
 
     ('*', '/entities', Entities),
+
+    ('*', '/exports', Exports),
 ]

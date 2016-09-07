@@ -7,8 +7,9 @@ from aiohttp import web
 
 from exness_comment.configs import settings
 from exness_comment.models import Comment
+from exness_comment.models.export import ExportComment
 from exness_comment.utils.export import factory_export
-from exness_comment.utils.views import dumps
+from exness_comment.utils.views import json_response
 from exness_comment.views.commet.mixin import MixinComment
 
 __all__ = ['CommentsUserById', 'CommentsExportUserById']
@@ -30,7 +31,7 @@ class CommentsUserById(MixinComment):
 
         comments = await (await self.request['conn'].execute(query)).fetchall()
 
-        return web.json_response(list(map(dict, comments)), dumps=dumps)
+        return json_response(comments)
 
 
 class CommentsExportUserById(MixinComment):
@@ -51,6 +52,8 @@ class CommentsExportUserById(MixinComment):
         data = self.validate(schema, data)
         data['user_id'] = int(data['user_id'])
 
+        query_export = sa.insert(ExportComment)
+
         where = [Comment.user_id == data['user_id']]
 
         if data['date_start'] and data['date_end']:
@@ -66,14 +69,19 @@ class CommentsExportUserById(MixinComment):
         comments = await self.request['conn'].execute(query)
 
         export = factory_export(data['format'])
+        date = datetime.datetime.now()
 
-        name = 'export-user-{}-{}.{}'.format(data['user_id'], datetime.datetime.now(), data['format'])
+        name = 'export-user-{}-{}.{}'.format(data['user_id'], date.strftime('%Y_%m_%d_%H_%M_%S'), data['format'])
         data_export = await export(comments)
 
         filename = os.path.join(settings.MEDIA_ROOT, 'exports', name)
         url = os.path.join(settings.MEDIA_URL, 'exports', name)
 
+        data.update({'url': url})
+        query_export = query_export.values(**data)
+
         with open(filename, 'w+b') as f:
             f.write(data_export)
+            await self.request['conn'].execute(query_export)
 
         return web.HTTPFound(url)

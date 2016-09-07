@@ -2,7 +2,7 @@ import sqlalchemy as sa
 from aiohttp import web
 
 from exness_comment.models import Entity
-from exness_comment.utils.views import View
+from exness_comment.utils.views import View, json_response
 
 __all__ = ['Entities']
 
@@ -21,4 +21,4 @@ class Entities(View):
         resp = await self.request['conn'].execute(query)
         entity = await resp.fetchone()
 
-        return web.json_response({'entity_id': entity.id}, status=201)
+        return json_response({'entity_id': entity.id}, status=201)

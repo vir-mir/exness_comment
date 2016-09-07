@@ -3,6 +3,7 @@ import json
 
 import schema as vs
 from aiohttp import web
+from aiopg.sa.result import RowProxy
 
 from exness_comment.middlewares.exceptions import abort
 
@@ -17,14 +18,22 @@ class View(web.View):
             abort(406, str(e))
 
 
-class DatetimeEncoder(json.JSONEncoder):
+class EncoderJson(json.JSONEncoder):
     def default(self, obj):
+
         if isinstance(obj, datetime.datetime):
             return obj.strftime('%Y-%m-%dT%H:%M:%SZ')
         elif isinstance(obj, datetime.date):
             return obj.strftime('%Y-%m-%d')
+        elif isinstance(obj, RowProxy):
+            return dict(obj)
+
         return json.JSONEncoder.default(self, obj)
 
 
-def dumps(data):
-    return json.dumps(data, cls=DatetimeEncoder)
+def json_response(data=None, *, body=None, status=200, reason=None, headers=None,
+                  content_type='application/json'):
+    text = json.dumps(data, cls=EncoderJson)
+
+    return web.Response(text=text, body=body, status=status, reason=reason,
+                        headers=headers, content_type=content_type)

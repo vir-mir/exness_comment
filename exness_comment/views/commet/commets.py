@@ -2,13 +2,12 @@ import datetime
 
 import schema as vs
 import sqlalchemy as sa
-from aiohttp import web
 from sqlalchemy.orm import aliased
 
 from exness_comment.middlewares.exceptions import abort
 from exness_comment.models import Entity, Comment
 from exness_comment.utils import tree
-from exness_comment.utils.views import dumps
+from exness_comment.utils.views import json_response
 from exness_comment.views.commet.mixin import MixinComment
 
 __all__ = ['Comments']
@@ -39,7 +38,7 @@ class Comments(MixinComment):
         else:
             ret = await self.get_entity_comments(data)
 
-        return web.json_response(ret, dumps=dumps)
+        return json_response(ret)
 
     async def get_first_level_comments(self, data):
         limit = data['limit']
@@ -54,7 +53,7 @@ class Comments(MixinComment):
 
         resp = await self.request['conn'].execute(query)
 
-        return list(map(dict, await resp.fetchall()))
+        return await resp.fetchall()
 
     async def get_parents_comments(self, data):
         c = aliased(Comment)
@@ -103,4 +102,4 @@ class Comments(MixinComment):
         }
 
         comment = await tree.insert_tree(Comment, self.request['conn'], parent_id, values)
-        return web.json_response(dict(await comment.fetchone()), status=201)
+        return json_response(await comment.fetchone(), status=201)

@@ -14,4 +14,6 @@ app = web.Application(debug=settings.DEBUG, middlewares=middleware)
 
 [app.router.add_route(*x) for x in urls.urls]
 
+app.router.add_static(settings.MEDIA_URL, settings.MEDIA_ROOT, name='media')
+
 web.run_app(app, port=settings.PORT)

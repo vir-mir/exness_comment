@@ -1,10 +1,11 @@
+import json
 from xml.etree import ElementTree as et
 
-from .views import dumps
+from .views import EncoderJson
 
 
 async def export_json(data):
-    return dumps(list(map(dict, await data.fetchall()))).encode()
+    return json.dumps((await data.fetchall()).encode(), cls=EncoderJson)
 
 
 async def export_xml(data):

@@ -1,4 +1,5 @@
 import json
+from functools import wraps
 
 from aiohttp import web
 from aiohttp.web_exceptions import HTTPException
@@ -7,6 +8,10 @@ __all__ = ['middleware_exception']
 
 
 async def middleware_exception(app, handler):
+    if 'StaticRoute' in repr(handler):
+        return handler
+
+    @wraps(handler)
     async def middleware_handler(request):
         try:
             return await handler(request)
