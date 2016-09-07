@@ -22,7 +22,6 @@ class CommentMixin:
     __tablename__ = ''
     user_id = sa.Column(sa.Integer, index=True)
     date_created = sa.Column(sa.DateTime(timezone=True), server_default=func.now())
-    date_update = sa.Column(sa.DateTime(timezone=True), server_default=func.now())
     text = sa.Column(sa.Text)
 
     @declared_attr
@@ -60,6 +59,7 @@ class Comment(CommentMixin, Base):
     __tablename__ = 'comments'
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
+    date_update = sa.Column(sa.DateTime(timezone=True), server_default=func.now())
     tree_id = sa.Column(sa.String(32))
     lkey = sa.Column(sa.Integer)
     rkey = sa.Column(sa.Integer)
