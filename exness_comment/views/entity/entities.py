@@ -1,5 +1,4 @@
 import sqlalchemy as sa
-from aiohttp import web
 
 from exness_comment.models import Entity
 from exness_comment.utils.views import View, json_response
@@ -9,7 +8,8 @@ __all__ = ['Entities']
 
 class Entities(View):
     async def get(self):
-        return web.json_response([])
+        entities = await (await self.request['conn'].execute(sa.select([Entity]))).fetchall()
+        return json_response(entities)
 
     async def post(self):
         schema = {
