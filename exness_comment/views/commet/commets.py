@@ -3,17 +3,78 @@ import datetime
 import schema as vs
 import sqlalchemy as sa
 from aiohttp import web
+from sqlalchemy.orm import aliased
 
 from exness_comment.middlewares.exceptions import abort
 from exness_comment.models import Entity, Comment
-from exness_comment.utils.views import View
+from exness_comment.utils import tree
+from exness_comment.utils.views import dumps
+from exness_comment.views.commet.mixin import MixinComment
 
 __all__ = ['Comments']
 
 
-class Comments(View):
+class Comments(MixinComment):
     async def get(self):
-        return web.json_response([])
+        data = dict(self.request.GET)
+        schema = {
+            vs.Optional('first_level', default=False): vs.Regex('[01]'),
+            vs.Optional('limit', default=10): vs.Regex('[\d]+'),
+            vs.Optional('page', default=1): vs.Regex('[1-9][\d]*'),
+            vs.Optional('parent_id', default=0): vs.Regex('[1-9][\d]*'),
+            'entity_id': vs.Regex('[1-9][\d]*'),
+        }
+        data = self.validate(schema, data)
+
+        data['first_level'] = bool(int(data['first_level']))
+        data['limit'] = int(data['limit'])
+        data['parent_id'] = int(data['parent_id'])
+        data['page'] = int(data['page'])
+        data['entity_id'] = int(data['entity_id'])
+
+        if data['first_level']:
+            ret = await self.get_first_level_comments(data)
+        elif data['parent_id'] > 0:
+            ret = await self.get_parents_comments(data)
+        else:
+            ret = await self.get_entity_comments(data)
+
+        return web.json_response(ret, dumps=dumps)
+
+    async def get_first_level_comments(self, data):
+        limit = data['limit']
+        offset = 0 if data['page'] == 1 else data['page'] * data['limit']
+
+        query = (sa.select(self.fields)
+                 .select_from(Comment)
+                 .where(sa.and_(Comment.level == 0, Comment.entity_id == data['entity_id']))
+                 .limit(limit)
+                 .offset(offset)
+                 .order_by(Comment.date_created))
+
+        resp = await self.request['conn'].execute(query)
+
+        return list(map(dict, await resp.fetchall()))
+
+    async def get_parents_comments(self, data):
+        c = aliased(Comment)
+        join = sa.join(c, Comment,
+                       sa.and_(Comment.lkey >= c.lkey, Comment.rkey <= c.rkey, Comment.tree_id == c.tree_id))
+
+        query = (sa.select(self.fields + [Comment.tree_id])
+                 .select_from(join)
+                 .where(sa.and_(c.id == data['parent_id'], Comment.entity_id == data['entity_id']))
+                 .order_by(Comment.date_created, Comment.lkey))
+
+        return await self.tree(await self.request['conn'].execute(query))
+
+    async def get_entity_comments(self, data):
+        query = (sa.select(self.fields + [Comment.tree_id])
+                 .select_from(Comment)
+                 .where(Comment.entity_id == data['entity_id'])
+                 .order_by(Comment.date_created, Comment.lkey))
+
+        return await self.tree(await self.request['conn'].execute(query))
 
     async def post(self):
         schema = {
@@ -32,48 +93,14 @@ class Comments(View):
         if (await conn.execute(query)).rowcount == 0:
             abort(406, 'not essence id %s' % data['entity_id'])
 
-        # query = sa.insert(Comment).values(
-        #     user_id=data['user_id'],
-        #     date_update=data['date_update'],
-        #     essence_id=data['essence_id'],
-        #     date_created=data['date_created']
-        # ).return_defaults(Comment.id)
-        # resp = await self.request['conn'].execute(query)
-        # entity = await resp.fetchone()
+        parent_id = data['parent_id']
+        values = {
+            'user_id': data['user_id'],
+            'entity_id': data['entity_id'],
+            'text': data['text'],
+            'date_created': datetime.datetime.now(),
+            'date_update': datetime.datetime.now()
+        }
 
-        lft = 0
-        rgt = 1
-        level = 0
-
-        query = (sa.select([Comment.right, Comment.left, Comment.level])
-                 .select_from(Comment)
-                 .where(Comment.id == data['parent_id']))
-
-        parent_comment = await (await conn.execute(query)).fetchone()
-
-        query = (sa.update(Comment)
-                 .values(rgt=Comment.right + 2,
-                         lft=sa.case([(Comment.left > parent_comment.rgt, Comment.left + 2)], else_=Comment.left))
-                 .where(Comment.right >= parent_comment.rgt))
-        print(query)
-        resp = await self.request['conn'].execute(query)
-
-        query = sa.insert(Comment).values(
-            user_id=data['user_id'],
-            essence_id=data['entity_id'],
-            text=data['text'],
-            level=1,
-            lft=lft + parent_comment.rgt,
-            rgt=parent_comment.rgt + 1,
-            parent_id=None if data['parent_id'] == 0 else data['parent_id'],
-            tree_id=1,
-            date_created=datetime.datetime.now(),
-            date_update=datetime.datetime.now()
-        ).return_defaults(Comment)
-
-        print(query)
-        resp = await self.request['conn'].execute(query)
-
-        # print(await resp.fetchone())
-
-        return web.json_response(status=201)
+        comment = await tree.insert_tree(Comment, self.request['conn'], parent_id, values)
+        return web.json_response(dict(await comment.fetchone()), status=201)
