@@ -9,4 +9,4 @@ RUN pip install -r requirements.txt
 
 EXPOSE 8007
 
-CMD alembic upgrade head && gunicorn test_comment:app --bind 0.0.0.0:8888 --worker-class aiohttp.worker.GunicornWebWorker
+CMD alembic upgrade head && gunicorn comment:app --bind 0.0.0.0:8888 --worker-class aiohttp.worker.GunicornWebWorker
