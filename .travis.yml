@@ -3,10 +3,7 @@ sudo: required
 language: python
 
 env:
-- DB_NAME=test_database
-- DB_PWD=qwerty
-- DB_USER=test_user
-- DB_HOST=localhost
+  - DB_NAME=test_database DB_PWD=qwerty DB_USER=test_user DB_HOST=localhost
 
 python:
   - "3.5"
