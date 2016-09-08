@@ -1,5 +1,5 @@
 [run]
-omit=configs/urls.py,*test*,*/configs/settings.py,*__init__.py ,*/server.py,migrations/*
+omit=*/configs/urls.py,tests/*,*/configs/settings.py,*__init__.py ,*/server.py,*/migrations/*
 
 [report]
 ; Показывать непокрытые линии
