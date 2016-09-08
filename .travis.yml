@@ -15,13 +15,11 @@ install:
   
 services:
   - postgresql
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker
-    fi
+  - docker
   
 before_install:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker build -t virmir49/exness_comment .
+    docker build -t virmir49/exness_comment .;
     fi
   
 before_script:
