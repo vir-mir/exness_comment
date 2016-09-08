@@ -5,7 +5,7 @@ import schema as vs
 from aiohttp import web
 from aiopg.sa.result import RowProxy
 
-from exness_comment.middlewares.exceptions import abort
+from comment.middlewares.exceptions import abort
 
 
 class View(web.View):

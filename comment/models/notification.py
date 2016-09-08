@@ -2,7 +2,7 @@ import sqlalchemy as sa
 from sqlalchemy import func
 from sqlalchemy.dialects import postgresql
 
-from exness_comment.models.base import Base
+from comment.models.base import Base
 
 __all__ = ['Notification']
 

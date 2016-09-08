@@ -1,9 +1,9 @@
 import schema as vs
 import sqlalchemy as sa
 
-from exness_comment.middlewares.exceptions import abort
-from exness_comment.models import Notification, Entity
-from exness_comment.utils.views import View, json_response
+from comment.middlewares.exceptions import abort
+from comment.models import Notification, Entity
+from comment.utils.views import View, json_response
 
 __all__ = ['Notifications', 'NotificationById']
 

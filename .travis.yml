@@ -19,7 +19,7 @@ services:
   
 before_install:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker build -t virmir49/exness_comment .;
+    docker build -t virmir49/test_comment .;
     fi
   
 before_script:
@@ -32,7 +32,7 @@ before_script:
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
     docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push virmir49/exness_comment;
+    docker push virmir49/test_comment;
     fi
     
 script:

@@ -4,7 +4,7 @@ import aiohttp
 import sqlalchemy as sa
 from aiohttp import web
 
-from exness_comment.models import Notification
+from comment.models import Notification
 
 wss = {}
 

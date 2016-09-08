@@ -7,7 +7,7 @@ Create Date: 2016-09-07 22:45:07.071423
 """
 
 # revision identifiers, used by Alembic.
-from exness_comment.models import Entity
+from comment.models import Entity
 
 revision = 'c604c545e634'
 down_revision = '82ac543ff47b'

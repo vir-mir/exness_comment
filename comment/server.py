@@ -3,8 +3,8 @@ import asyncio
 import aiohttp_autoreload
 from aiohttp import web
 
-from exness_comment import middlewares
-from exness_comment.configs import settings, urls
+from comment import middlewares
+from comment.configs import settings, urls
 
 
 def create_app(loop=None):

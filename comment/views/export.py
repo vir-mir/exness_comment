@@ -1,7 +1,7 @@
 import sqlalchemy as sa
 
-from exness_comment.models import ExportComment
-from exness_comment.utils.views import View, json_response
+from comment.models import ExportComment
+from comment.utils.views import View, json_response
 
 __all__ = ['Exports']
 

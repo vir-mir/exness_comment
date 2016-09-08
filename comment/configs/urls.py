@@ -1,4 +1,4 @@
-from exness_comment.views import *
+from comment.views import *
 
 urls = [
     ('*', '/comments', Comments),

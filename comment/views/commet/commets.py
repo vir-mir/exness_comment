@@ -4,11 +4,11 @@ import schema as vs
 import sqlalchemy as sa
 from sqlalchemy.orm import aliased
 
-from exness_comment.middlewares.exceptions import abort
-from exness_comment.models import Entity, Comment, CommentHistory, Notification
-from exness_comment.utils import tree
-from exness_comment.utils.views import json_response
-from exness_comment.views.commet.mixin import MixinComment
+from comment.middlewares.exceptions import abort
+from comment.models import Entity, Comment, CommentHistory, Notification
+from comment.utils import tree
+from comment.utils.views import json_response
+from comment.views.commet.mixin import MixinComment
 
 __all__ = ['Comments']
 

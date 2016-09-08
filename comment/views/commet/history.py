@@ -1,10 +1,10 @@
 import schema as vs
 import sqlalchemy as sa
 
-from exness_comment.middlewares.exceptions import abort
-from exness_comment.models import CommentHistory as ModelCommentHistory
-from exness_comment.utils.views import json_response
-from exness_comment.views.commet.mixin import MixinComment
+from comment.middlewares.exceptions import abort
+from comment.models import CommentHistory as ModelCommentHistory
+from comment.utils.views import json_response
+from comment.views.commet.mixin import MixinComment
 
 __all__ = ['CommentHistory']
 

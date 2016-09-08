@@ -5,12 +5,12 @@ import schema as vs
 import sqlalchemy as sa
 from aiohttp import web
 
-from exness_comment.configs import settings
-from exness_comment.models import Comment
-from exness_comment.models.export import ExportComment
-from exness_comment.utils.export import factory_export
-from exness_comment.utils.views import json_response
-from exness_comment.views.commet.mixin import MixinComment
+from comment.configs import settings
+from comment.models import Comment
+from comment.models.export import ExportComment
+from comment.utils.export import factory_export
+from comment.utils.views import json_response
+from comment.views.commet.mixin import MixinComment
 
 __all__ = ['CommentsUserById', 'CommentsExportUserById']
 

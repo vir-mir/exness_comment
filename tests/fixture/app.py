@@ -3,8 +3,8 @@ import json
 import pytest
 from jsonschema import ValidationError, validate
 
-from exness_comment import create_app
-from exness_comment.configs import settings as app_settings
+from comment import create_app
+from comment.configs import settings as app_settings
 
 
 class MonkeyPatchWrapper(object):

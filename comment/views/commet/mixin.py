@@ -1,5 +1,5 @@
-from exness_comment.models import Comment
-from exness_comment.utils.views import View
+from comment.models import Comment
+from comment.utils.views import View
 
 
 class MixinComment(View):

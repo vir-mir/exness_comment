@@ -2,7 +2,7 @@ from functools import wraps
 
 from aiopg.sa import create_engine
 
-from exness_comment.configs import settings
+from comment.configs import settings
 
 __all__ = ['middleware_db']
 
