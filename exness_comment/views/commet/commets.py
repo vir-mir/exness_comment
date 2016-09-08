@@ -42,7 +42,7 @@ class Comments(MixinComment):
 
     async def get_first_level_comments(self, data):
         limit = data['limit']
-        offset = 0 if data['page'] == 1 else data['page'] * data['limit']
+        offset = (data['page'] - 1) * data['limit']
 
         query = (sa.select(self.fields)
                  .select_from(Comment)
