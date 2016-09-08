@@ -5,7 +5,7 @@ from .views import EncoderJson
 
 
 async def export_json(data):
-    return json.dumps((await data.fetchall()).encode(), cls=EncoderJson)
+    return json.dumps(await data.fetchall(), cls=EncoderJson).encode()
 
 
 async def export_xml(data):

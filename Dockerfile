@@ -9,4 +9,4 @@ RUN pip install -r requirements.txt
 
 EXPOSE 8007
 
-CMD gunicorn server:app --bind 0.0.0.0:8000 --worker-class aiohttp.worker.GunicornWebWorker
+CMD gunicorn exness_comment:app --bind 0.0.0.0:8000 --worker-class aiohttp.worker.GunicornWebWorker

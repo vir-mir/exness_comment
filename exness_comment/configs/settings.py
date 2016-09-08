@@ -1,6 +1,7 @@
 import os
 
 DEBUG = True
+
 PORT = 8007
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))

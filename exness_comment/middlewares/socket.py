@@ -3,11 +3,7 @@ from functools import wraps
 
 import aiohttp
 
-from exness_comment.configs import settings
-
 __all__ = ['middleware_socket']
-
-session = aiohttp.ClientSession()
 
 
 async def middleware_socket(app, handler):
@@ -27,12 +23,16 @@ async def middleware_socket(app, handler):
         else:
             return response
 
+        session = aiohttp.ClientSession(loop=app.loop)
+
         try:
-            async with session.ws_connect('ws://localhost:%s/ws' % settings.PORT) as ws:
+            async with session.ws_connect('ws://%s/ws' % request.host) as ws:
                 ws.send_str('open-0')
                 ws.send_str(json.dumps(data))
         except aiohttp.ClientOSError:
             pass
+        finally:
+            session.close()
 
         return response
 

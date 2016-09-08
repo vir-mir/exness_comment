@@ -17,12 +17,14 @@ async def middleware_db(app, handler):
             user=settings.DATA_BASE['username'],
             database=settings.DATA_BASE['db'],
             host=settings.DATA_BASE['host'],
-            password=settings.DATA_BASE['password']
+            password=settings.DATA_BASE['password'],
+            loop=app.loop
         )
 
         async with engine, engine.acquire() as conn:
             request['conn'] = conn
+            result = await handler(request)
 
-            return await handler(request)
+        return result
 
     return middleware_handler
