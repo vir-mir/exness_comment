@@ -43,7 +43,7 @@ class Comments(MixinComment):
     async def get_first_level_comments(self, data):
         limit = data['limit']
         offset = (data['page'] - 1) * data['limit']
-        print(offset)
+
         query = (sa.select(self.fields)
                  .select_from(Comment)
                  .where(sa.and_(Comment.level == 0, Comment.entity_id == data['entity_id']))
