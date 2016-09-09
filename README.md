@@ -21,55 +21,40 @@
 
 * **Сущности (посты, блоги...)**
 
-* * [Описание](Описание)
+* * [Получение списка](https://github.com/vir-mir/test_comment/wiki/entity#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D1%81%D0%BF%D0%B8%D1%81%D0%BA%D0%B0)
 
-* * [Получение списка](Получение списка)
-
-* * [Создание](Создание)
+* * [Создание](https://github.com/vir-mir/test_comment/wiki/entity#%D0%A1%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5)
 
 * **Комментарии**
 
-* * [Описание](Описание)
+* * [Описание](https://github.com/vir-mir/test_comment/wiki/comments#%D0%9E%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5)
 
-* * [Создание](Создание)
+* * [Создание](https://github.com/vir-mir/test_comment/wiki/comments#%D0%A1%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5)
 
-* * [Получение списка](Получение списка)
+* * [Получение списка](https://github.com/vir-mir/test_comment/wiki/comments#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D1%81%D0%BF%D0%B8%D1%81%D0%BA%D0%B0)
 
 * **Комментарий**
 
-* * [Удаление](Удаление) 
+* * [Удаление](https://github.com/vir-mir/test_comment/wiki/comment#%D0%A3%D0%B4%D0%B0%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5) 
 
-* * [Редактирование](Редактирование)
+* * [Редактирование](https://github.com/vir-mir/test_comment/wiki/comment#%D0%A0%D0%B5%D0%B4%D0%B0%D0%BA%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5)
 
 * **История комментария**
 
-* * [Список редактирование/удаление/создание комментария](Список редактирование/удаление/создание комментария) 
+* * [Список редактирование/удаление/создание комментария](https://github.com/vir-mir/test_comment/wiki/comments-history#%D0%A1%D0%BF%D0%B8%D1%81%D0%BE%D0%BA-%D1%80%D0%B5%D0%B4%D0%B0%D0%BA%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%D1%83%D0%B4%D0%B0%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BA%D0%BE%D0%BC%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%80%D0%B8%D1%8F) 
 
 * **Коментарии пользователя**
 
-* * [Получение списка комментарий пользователя](Получение списка комментарий пользователя)
+* * [Получение списка комментарий пользователя](https://github.com/vir-mir/test_comment/wiki/comments-user#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D1%81%D0%BF%D0%B8%D1%81%D0%BA%D0%B0-%D0%BA%D0%BE%D0%BC%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%80%D0%B8%D0%B9-%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F)
 
-* * [Экспорт комментарий пользователя (json, xml)](Экспорт комментарий пользователя (json, xml))
+* * [Экспорт комментарий пользователя (json, xml)](https://github.com/vir-mir/test_comment/wiki/comments-user#%D0%AD%D0%BA%D1%81%D0%BF%D0%BE%D1%80%D1%82-%D0%BA%D0%BE%D0%BC%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%80%D0%B8%D0%B9-%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F-json-xml)
 
-* * [Получение списка/истории экспорта комментарий ](Получение списка/истории экспорта комментарий )
+* * [Получение списка/истории экспорта комментарий](https://github.com/vir-mir/test_comment/wiki/comments-user#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D1%81%D0%BF%D0%B8%D1%81%D0%BA%D0%B0%D0%B8%D1%81%D1%82%D0%BE%D1%80%D0%B8%D0%B8-%D1%8D%D0%BA%D1%81%D0%BF%D0%BE%D1%80%D1%82%D0%B0-%D0%BA%D0%BE%D0%BC%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%80%D0%B8%D0%B9)
 
 * **Подписка на уведомление комментарий для сущности**
 
-* * [Описание](Описание)
+* * [Описание](https://github.com/vir-mir/test_comment/wiki/notifications#%D0%9E%D0%BF%D0%B8%D1%81%D0%B0%D0%BD%D0%B8%D0%B5)
 
-* * [Подписка](Подписка)
+* * [Подписка](https://github.com/vir-mir/test_comment/wiki/notifications#%D0%9F%D0%BE%D0%B4%D0%BF%D0%B8%D1%81%D0%BA%D0%B0)
 
-* * [Отписка](Отписка) 
-
-```javascript
-var protocol_one = document.location.protocol == 'http:' ? 'ws' : 'wss',
-    port = document.location.port,
-    url_one = protocol_one + "://" + document.location.hostname + (port ? ":" + port : "") + "/ws",
-    socket = window['MozWebSocket'] ? new MozWebSocket(url_one) : new WebSocket(url_one);
-
-socket.onopen = function() {this.send('open-{user_id}')};
-
-socket.onmessage = function(e) {
-    console.log(e.data);
-};
-```
+* * [Отписка](https://github.com/vir-mir/test_comment/wiki/notifications#%D0%9E%D1%82%D0%BF%D0%B8%D1%81%D0%BA%D0%B0) 
