@@ -1,6 +1,5 @@
 [![Build Status](https://travis-ci.org/vir-mir/test_comment.svg?branch=master)](https://travis-ci.org/vir-mir/test_comment)
 
-
 ## Основы основ
 
 * **Окружение**
